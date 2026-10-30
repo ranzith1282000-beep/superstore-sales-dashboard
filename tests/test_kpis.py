@@ -33,3 +33,11 @@ def test_every_row_lands_in_one_discount_band():
 def test_heavy_discounts_lose_money():
     d = s.discount_bands(s.load())
     assert d.loc["21-40%", "Profit"] < 0 and d.loc["Over 40%", "Profit"] < 0
+
+
+def test_original_cards_explained():
+    # The first dashboard's "Total Revenue" card ($2.58M) was Sales + Profit,
+    # and its 11.09% margin was profit divided by that figure.
+    k = s.kpis(s.load())
+    assert round(k["profit_plus_sales_card"] / 1e6, 2) == 2.58
+    assert round(k["total_profit"] / k["profit_plus_sales_card"] * 100, 2) == 11.09
